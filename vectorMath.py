@@ -1,5 +1,4 @@
-from typing import *
-from math import *
+from constants import *
 
 vector = tuple[float, float]
 
@@ -20,3 +19,10 @@ def magnitude (vec: vector) -> float:
 
 def projectOnto (vec1: vector, vec2: vector) -> vector:
     return scaleBy(vec2, (dot(vec1, vec2)/(magnitude(vec2)**2)))
+
+def normalPoint (fromVec: vector, toVec: vector) -> vector:
+    fullPoint: vector = subtract(toVec, fromVec)
+    return scaleBy(fullPoint, 1/magnitude(fullPoint))
+
+def distanceBetween (vec1: vector, vec2: vector) -> float:
+    return magnitude(subtract(vec1, vec2))
