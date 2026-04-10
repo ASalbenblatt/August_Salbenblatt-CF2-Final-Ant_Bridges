@@ -1,10 +1,13 @@
 from classes import *
 
 blorbList: list[blorbs] = []
+blockList: list[sideBlocks] = [sideBlocks("left"), sideBlocks("right")]
 frame: int = 0
 
+
+
 while(True):
-    delta = timer.tick(frameRate) / 10       #Sets the framerate
+    delta = timer.tick(frameRate)
     frame += 1
 
     screen.fill([205, 225, 255])
@@ -12,23 +15,24 @@ while(True):
     keys = pygame.key.get_pressed()
     events = pygame.event.get()
 
-    width:int = screen.get_width()
-    height:int = screen.get_height()
+    
 
     if frame % (secsPerSpawn*frameRate) == 0:
-        blorbList.append(blorbs((xSpawn, yPercentSpawn*height)))
+        blorbList.append(blorbs((xSpawn, (1-yPercentSpawn)*height)))
 
 
 
     for blorb in blorbList:
-        blorb.stateChange(blorbList)
+        blorb.stateChange(blorbList, delta)
 
     for blorb in blorbList:
-        blorb.calcForces(blorbList)
+        blorb.calcForces(blorbList, blockList)
 
     for blorb in blorbList:
-        blorb.update(height, blorbList, delta)
+        blorb.update(blorbList, delta/10)
 
+    for block in blockList:
+        block.draw()
     for blorb in blorbList:
         blorb.draw()
 

@@ -26,3 +26,7 @@ def normalPoint (fromVec: vector, toVec: vector) -> vector:
 
 def distanceBetween (vec1: vector, vec2: vector) -> float:
     return magnitude(subtract(vec1, vec2))
+
+def angleOf (vec:vector) -> float:
+    '''Returns the angle of the vector.  <1,0> is at 0, the angle ranges from -pi to pi in radians.'''
+    return atan2(vec[1], vec[0])

@@ -35,5 +35,9 @@ class TestVectorMath(unittest.TestCase):
         self.assertAlmostEqual(distanceBetween((0,4), (-3,0)), 5, msg="Should be 5")
         self.assertAlmostEqual(distanceBetween((0,4), (0,-5)), 9, msg="Should be 9")
 
+    def test_angleOf(self):
+        self.assertAlmostEqual(angleOf((3, 3)), pi/4, msg="Should be pi/4")
+        self.assertAlmostEqual(angleOf((0, -5)), -1*pi/2, msg="Should be -pi/2")
+
 if __name__ == "__main_":
     unittest.main()
