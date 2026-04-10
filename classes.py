@@ -5,7 +5,7 @@ state = Literal["grabbing", "walking", "falling"]
 class blorbs:
     def __init__ (self, initialPosition: vector) -> None:
         self.sate: state = "falling"
-        self.velocity: vector = (0, 0)
+        self.velocity: vector = (15, 0)
         self.forces: vector = (0,0)
         self.position: vector = initialPosition
         self.attatchments: dict[(blorbs | sideBlocks), float] = {} #{blorb or anchor: angle(Right is 0, counterclockwise is positive)}
@@ -14,7 +14,7 @@ class blorbs:
     def update (self, blorbList: list, frameRateCorection: float) -> None:
         self.velocity = add(self.velocity, scaleBy(self.forces, frameRateCorection/mass))
         self.position = add(scaleBy(self.velocity, frameRateCorection), self.position)
-        if self.position[1] > height:
+        if self.position[1] > height or self.position[0] > width or self.position[0] < 0:
             blorbList.remove(self)
 
     def calcForces (self, blorbList: list, blockList: list) -> None:
@@ -32,6 +32,14 @@ class blorbs:
                 self.forces = add(self.forces, (0, -1*gravity*mass))
                 self.position = (self.position[0], block.position[1]-blorbRadius)
                 self.velocity = (self.velocity[0], 0)
+                self.lastHit = pygame.time.get_ticks()
+            elif self.position[1] > block.position [1] and block.side == "left" and self.position[0] <= block.position[0] + blorbRadius:
+                self.position = (block.position[0] + blorbRadius, self.position[1])
+                self.velocity = (0, self.velocity[0])
+                self.lastHit = pygame.time.get_ticks()
+            elif self.position[1] > block.position [1] and block.side == "right" and self.position[0] >= block.position[0] - blorbRadius:
+                self.position = (block.position[0] - blorbRadius, self.position[1])
+                self.velocity = (0, self.velocity[0])
                 self.lastHit = pygame.time.get_ticks()
 
         if self.sate == "walking":
