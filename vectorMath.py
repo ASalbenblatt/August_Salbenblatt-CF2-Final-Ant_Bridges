@@ -17,8 +17,8 @@ def scaleBy (vec1: vector, scalar: float) -> vector:
 def magnitude (vec: vector) -> float:
     return sqrt(vec[0]**2 + vec[1]**2)
 
-def projectOnto (vec1: vector, vec2: vector) -> vector:
-    return scaleBy(vec2, (dot(vec1, vec2)/(magnitude(vec2)**2)))
+def projectOnto (project: vector, onto: vector) -> vector:
+    return scaleBy(onto, (dot(project, onto)/(magnitude(onto)**2)))
 
 def normalPoint (fromVec: vector, toVec: vector) -> vector:
     fullPoint: vector = subtract(toVec, fromVec)
@@ -28,5 +28,5 @@ def distanceBetween (vec1: vector, vec2: vector) -> float:
     return magnitude(subtract(vec1, vec2))
 
 def angleOf (vec:vector) -> float:
-    '''Returns the angle of the vector.  <1,0> is at 0, the angle ranges from -pi to pi in radians.'''
+    '''Returns the angle of the vector.  <1,0> is at 0, the angle ranges from -pi to pi in radians.  If -y is up, clockwise is positive'''
     return atan2(vec[1], vec[0])

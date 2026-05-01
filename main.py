@@ -1,7 +1,14 @@
 from classes import *
 
 blorbList: list[blorbs] = []
-blockList: list[sideBlocks] = [sideBlocks("left"), sideBlocks("right")]
+blockList: list[sideBlocks] = []
+
+for n in range(nAttatchmentPoints):
+    y = (1-(blockHeightPercent*((n+1)/nAttatchmentPoints)))*height
+    blockList.append(sideBlocks("left", y))
+    blockList.append(sideBlocks("right", y))
+    blockList.append(sideBlocks("middleLeft", y))
+    blockList.append(sideBlocks("middleRight", y))
 frame: int = 0
 
 
@@ -20,10 +27,13 @@ while(True):
     if frame % (secsPerSpawn*frameRate) == 0:
         blorbList.append(blorbs((xSpawn, (1-yPercentSpawn)*height)))
 
-
+    furthestForward: float = sideBlockWidth
+    for blorb in blorbList:
+        if blorb.state == "grabbing" and blorb.position[0] > furthestForward:
+            furthestForward = blorb.position[0]
 
     for blorb in blorbList:
-        blorb.stateChange(blorbList, delta)
+        blorb.stateChange(blorbList, blockList, delta, furthestForward)
 
     for blorb in blorbList:
         blorb.calcForces(blorbList, blockList)
