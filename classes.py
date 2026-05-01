@@ -14,7 +14,7 @@ class blorbs:
     def update (self, blorbList: list, frameRateCorection: float) -> None:
         self.velocity = add(self.velocity, scaleBy(self.forces, frameRateCorection/mass))
         self.position = add(scaleBy(self.velocity, frameRateCorection), self.position)
-        if self.position[1] > height or self.position[0] > width or self.position[0] < 0:
+        if self.position[1] > height + blorbRadius+5 or self.position[0] > width + blorbRadius+5 or self.position[0] < 0 - (blorbRadius+5):
             blorbList.remove(self)
             for blorb in blorbList:
                 if blorb.attatchments.__contains__(self):
@@ -37,7 +37,7 @@ class blorbs:
 
                 self.forces = add(self.forces, add(dampingForce, springForce))
 
-                pygame.draw.line(screen, [255, 0, 0], self.position, add(self.position, pointToAttatchment), width=10)
+                pygame.draw.line(screen, [11, 13, 18], self.position, add(self.position, pointToAttatchment), width=20)
                 # pygame.draw.line(screen, [0, 255, 0], self.position, add(self.position, scaleBy((-1*pointToAttatchment[1], pointToAttatchment[0]), angleForce*angleBetween*10)), width=10)
                 
                 
@@ -62,7 +62,6 @@ class blorbs:
                 self.position = (block.position[0] + blorbRadius, self.position[1])
                 self.velocity = (0, self.velocity[1])
                 self.lastHit = pygame.time.get_ticks()
-                print(block.side)
             if self.position[1] > block.position [1] and (block.side == "right" or (block.side == "middleLeft" and self.position[0] < width/2)) and self.position[0] >= block.position[0] - blorbRadius:
                 self.position = (block.position[0] - blorbRadius, self.position[1])
                 self.velocity = (0, self.velocity[1])
@@ -126,12 +125,12 @@ class blorbs:
         
 
     def draw(self) -> None:
-        color = [0, 0, 60]
         if self.state == "walking":
-            color = [0, 60, 0]
+            screen.blit(walkingImage, (self.position[0]-50, self.position[1]-50))
         elif self.state == "grabbing":
-            color = [60, 0, 0]
-        pygame.draw.circle(screen, color, self.position, blorbRadius)
+            screen.blit(grabbingImage, (self.position[0]-50, self.position[1]-50))
+        else:
+            screen.blit(fallingImage, (self.position[0]-50, self.position[1]-50))
 
     def grip(self, blorbList: list, blockList: list) -> None:
         for blorb in blorbList:

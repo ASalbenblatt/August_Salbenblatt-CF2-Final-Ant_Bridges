@@ -36,3 +36,7 @@ height:Final = screen.get_height()
 xSpawn: Final = 60
 yPercentSpawn: Final = 0.9 #Percent from the bottom
 secsPerSpawn = 1.5
+
+grabbingImage = pygame.image.load("Gripping.png")
+walkingImage = pygame.image.load("Walking.png")
+fallingImage = pygame.image.load("Falling.png")
